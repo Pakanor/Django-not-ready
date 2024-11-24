@@ -1,0 +1,63 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>das</title>
+
+    <link rel="stylesheet" href="{% static '/css/style.css'%}">
+</head>
+<body>
+    <button id="openModalBtn">Add Task</button>
+
+    <!-- Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Dodaj aktywność</button>
+                
+            </form>
+        </div>
+    </div>
+
+    <h2>Twoje zadania</h2>
+    {% if tasks %}
+        <ul>
+            {% for task in tasks %}
+                <li>{{ task.title }} - {{ task.description }} 
+                    <form action="{% url 'task_delete' task.id %}" method="POST" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Usuń</button>
+                    </form>
+                    <form action="{% url 'task_edit' task.id %}" method="POST" style="display:inline;">
+                        {% csrf_token %}
+                        <input type="text" name="title" value="{{ task.title }}" placeholder="Edytuj tytuł">
+                        <input type="text" name="description" value="{{ task.description }}" placeholder="Edytuj opis">
+                        <button type="submit" class="btn btn-danger">edit</button>
+                    </form>
+
+                    
+                    
+
+
+                </li>
+                {% for task in tasks %}
+                <div>
+                    
+            
+                    <!-- Formularz edycji dla każdego zadania -->
+                   
+                </div>
+            {% endfor %}
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Brak zadań.</p>
+    {% endif %}
+</body>
+</html>
